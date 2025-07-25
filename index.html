@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prabhupada AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Tangerine:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='img/chaitanya.png') }}" alt="Chaitanya Mahaprabhu" class="header-img">
+        <h1>Hare Krishna 🙏</h1>
+    </header>
+
+    <main>
+        <div class="welcome">
+            Hare Krishna 🙏 Welcome to this devotional platform. 
+            Ask any life question and I will tell you how Srila Prabhupada can guide you further. 
+            <strong>Chant Hare Krishna and be happy.</strong>
+        </div>
+
+        <form id="questionForm">
+            <textarea name="question" id="question" placeholder="Write your question here..."></textarea>
+            <button type="submit">Ask</button>
+        </form>
+
+        <div id="answerBox" class="answer-box"></div>
+    </main>
+
+    <footer>
+        <img src="{{ url_for('static', filename='img/prabhupada.png') }}" alt="Srila Prabhupada" class="footer-img">
+    </footer>
+
+    <script>
+        document.getElementById('questionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            let question = document.getElementById('question').value;
+            let response = await fetch('/ask', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({question})
+            });
+            let data = await response.json();
+            document.getElementById('answerBox').innerText = data.answer;
+        });
+    </script>
+</body>
+</html>
